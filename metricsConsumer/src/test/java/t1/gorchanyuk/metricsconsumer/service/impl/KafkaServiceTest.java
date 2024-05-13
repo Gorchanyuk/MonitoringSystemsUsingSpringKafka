@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import t1.gorchanyuk.metricsconsumer.entity.Metric;
 import t1.gorchanyuk.metricsconsumer.exception.DeserializationException;
+import t1.gorchanyuk.metricsconsumer.service.KafkaService;
 import t1.gorchanyuk.metricsconsumer.service.MetricService;
 import t1.gorchanyuk.metricsconsumer.testutil.ModelGenerator;
 
@@ -18,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("Тестирование етодов класса KafkaServiceImpl")
-public class KafkaServiceImplTest {
+@DisplayName("Тестирование етодов класса KafkaService")
+public class KafkaServiceTest {
 
     @Mock
     private ObjectMapper mapper;
@@ -28,7 +29,7 @@ public class KafkaServiceImplTest {
     private MetricService metricService;
 
     @InjectMocks
-    private KafkaServiceImpl kafkaService;
+    private KafkaService kafkaService;
 
     @SneakyThrows
     @Test

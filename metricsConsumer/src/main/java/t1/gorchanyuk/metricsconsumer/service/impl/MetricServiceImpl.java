@@ -1,7 +1,6 @@
 package t1.gorchanyuk.metricsconsumer.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +14,6 @@ import t1.gorchanyuk.metricsconsumer.repository.MetricRepository;
 import t1.gorchanyuk.metricsconsumer.service.MetricService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +25,7 @@ public class MetricServiceImpl implements MetricService {
     @Override
     public MetricDto findById(long id) {
 
-        Metric metric = repository.findById(id).orElseThrow(()->
+        Metric metric = repository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Метрика с Id: " + id + " не найдена"));
 
         return mapper.mapToMetricDto(metric);
@@ -47,7 +45,7 @@ public class MetricServiceImpl implements MetricService {
     @Override
     public void save(Metric metric) {
 
-        metric.getMeasure().forEach(measure-> measure.setMetric(metric));
+        metric.getMeasure().forEach(measure -> measure.setMetric(metric));
 
         repository.save(metric);
     }

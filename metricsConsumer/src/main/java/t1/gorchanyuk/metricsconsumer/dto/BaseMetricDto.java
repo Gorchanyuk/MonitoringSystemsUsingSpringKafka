@@ -24,6 +24,6 @@ public class BaseMetricDto {
     @Schema(description = "Описание", example = "Used JVM memory")
     private String description;
 
-    @Schema(description = "Время создания метрики", example = "")
+    @Schema(description = "Время создания метрики")
     private LocalDateTime timestamp;
 }

@@ -26,7 +26,7 @@ public class MetricDto implements Serializable {
     @Schema(description = "Единица измерения, или тип передаваемых данных (необязательное поле)", example = "bytes")
     private String baseUnit;
 
-    @Schema(description = "Время создания метрики", example = "")
+    @Schema(description = "Время создания метрики")
     private LocalDateTime timestamp;
 
     @Schema(description = "Измерения метрики")
