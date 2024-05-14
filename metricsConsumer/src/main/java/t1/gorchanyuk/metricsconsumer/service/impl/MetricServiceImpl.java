@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import t1.gorchanyuk.metricsconsumer.dto.BaseMetricDto;
 import t1.gorchanyuk.metricsconsumer.dto.MetricDto;
 import t1.gorchanyuk.metricsconsumer.entity.Metric;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MetricServiceImpl implements MetricService {
 
     private final MetricRepository repository;
@@ -43,6 +45,7 @@ public class MetricServiceImpl implements MetricService {
     }
 
     @Override
+    @Transactional
     public void saveAll(List<Metric> metrics) {
 
         metrics.forEach(this::setMetricForAllMeasurements);
