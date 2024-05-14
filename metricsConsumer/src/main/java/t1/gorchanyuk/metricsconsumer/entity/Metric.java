@@ -16,7 +16,8 @@ import java.util.List;
 public class Metric {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "metric_id_seq")
+    @SequenceGenerator(name = "metric_id_seq", initialValue = 1, allocationSize = 100)
     @Column(name = "id", unique = true)
     private Long id;
 

@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import t1.gorchanyuk.metricsproducer.exception.SendMetricException;
+import t1.gorchanyuk.metricsproducer.model.Metric;
 import t1.gorchanyuk.metricsproducer.model.metric.Measurement;
 import t1.gorchanyuk.metricsproducer.model.metric.MetricRequest;
 import t1.gorchanyuk.metricsproducer.service.impl.MetricServiceImpl;
@@ -56,7 +57,7 @@ class MetricControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(""));
 
-        verify(metricsService, times(1)).sendMetric(metricRequest);
+        verify(metricsService, times(1)).sendMetric(any(Metric.class));
     }
 
     @Test
@@ -64,14 +65,14 @@ class MetricControllerTest {
     @DisplayName("Тестирование выбрасывания ошибки во время добавления метрик")
     void testSendMetricFailure() {
 
-        doThrow(SendMetricException.class).when(metricsService).sendMetric(metricRequest);
+        doThrow(SendMetricException.class).when(metricsService).sendMetric(any(Metric.class));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/metrics")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(metricRequest)))
                 .andExpect(status().isInternalServerError());
 
-        verify(metricsService, times(1)).sendMetric(metricRequest);
+        verify(metricsService, times(1)).sendMetric(any(Metric.class));
     }
 
     @Test

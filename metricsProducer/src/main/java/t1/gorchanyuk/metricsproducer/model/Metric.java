@@ -8,7 +8,6 @@ public interface Metric {
 
     String getDescription();
 
-
     LocalDateTime getTimestamp();
 
 }

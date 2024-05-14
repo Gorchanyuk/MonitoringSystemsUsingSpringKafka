@@ -13,7 +13,8 @@ import lombok.*;
 public class Measurement {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "measurement_id_seq")
+    @SequenceGenerator(name = "measurement_id_seq", initialValue = 1, allocationSize = 150)
     @Column(name = "id", unique = true)
     private Long id;
 

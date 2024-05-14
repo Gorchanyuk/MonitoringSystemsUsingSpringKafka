@@ -5,6 +5,9 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <changeSet id="initial_0002_01" author="gorchanyuk">
+        <createSequence incrementBy="150" sequenceName="measurement_id_seq" startValue="1"/>
+    </changeSet>
+    <changeSet id="initial_0002_02" author="gorchanyuk">
         <createTable tableName="measurement">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_measurement"/>
@@ -14,7 +17,7 @@
             <column name="metric" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="initial_0002_02" author="gorchanyuk">
+    <changeSet id="initial_0002_03" author="gorchanyuk">
         <addForeignKeyConstraint baseColumnNames="metric" baseTableName="measurement"
                                  constraintName="FK_MEASUREMENT_ON_METRIC" referencedColumnNames="id"
                                  referencedTableName="metric"/>

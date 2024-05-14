@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ModelGenerator {
 
-    public static Metric getMetric(long id){
+    public static Metric getMetric(long id) {
         return Metric.builder()
                 .id(id)
                 .name("test.metric")
@@ -22,15 +22,15 @@ public class ModelGenerator {
                 .build();
     }
 
-    private static Measurement getMeasurement(long num){
+    private static Measurement getMeasurement(long num) {
         return Measurement.builder()
-                .id( num)
+                .id(num)
                 .statistic("statistic " + num)
                 .value("value " + num)
                 .build();
     }
 
-    public static BaseMetricDto getBaseMetricDto(long id){
+    public static BaseMetricDto getBaseMetricDto(long id) {
 
         return BaseMetricDto.builder()
                 .id(id)
@@ -40,7 +40,7 @@ public class ModelGenerator {
                 .build();
     }
 
-    public static MetricDto getMetricDto(){
+    public static MetricDto getMetricDto() {
         return MetricDto.builder()
                 .name("name")
                 .description("description")
@@ -50,7 +50,7 @@ public class ModelGenerator {
                 .build();
     }
 
-    private static MeasurementDto getMeasurementDto(int id){
+    private static MeasurementDto getMeasurementDto(int id) {
         return MeasurementDto.builder()
                 .statistic("statistic " + id)
                 .value("value " + id)

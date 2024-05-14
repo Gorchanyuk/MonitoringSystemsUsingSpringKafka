@@ -43,10 +43,16 @@ public class MetricServiceImpl implements MetricService {
     }
 
     @Override
-    public void save(Metric metric) {
+    public void saveAll(List<Metric> metrics) {
 
-        metric.getMeasure().forEach(measure -> measure.setMetric(metric));
+        metrics.forEach(this::setMetricForAllMeasurements);
 
-        repository.save(metric);
+        repository.saveAll(metrics);
+    }
+
+    private void setMetricForAllMeasurements(Metric metric) {
+
+        metric.getMeasure()
+                .forEach(measure -> measure.setMetric(metric));
     }
 }

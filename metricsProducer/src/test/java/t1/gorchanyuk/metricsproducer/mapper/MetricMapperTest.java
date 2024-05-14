@@ -22,9 +22,10 @@ public class MetricMapperTest {
     private static MetricMapper metricMapper;
 
     @BeforeAll
-    public static void setUp(){
+    public static void setUp() {
         metricMapper = Mappers.getMapper(MetricMapper.class);
     }
+
     @Test
     @DisplayName("Тест маппинга Meter в MetricFromMeter")
     public void testMapToMetricFromMeter() {

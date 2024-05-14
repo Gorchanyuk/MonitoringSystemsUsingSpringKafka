@@ -21,7 +21,8 @@ import t1.gorchanyuk.metricsconsumer.testutil.ModelGenerator;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,7 +58,7 @@ public class MetricServiceImplTest {
     public void testFindByIdFailure() {
 
         long id = 1L;
-        when(repository.findById(id)).thenThrow(EntityNotFoundException.class);
+        when(repository.findById(id)).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> metricService.findById(id));
 
@@ -75,7 +76,7 @@ public class MetricServiceImplTest {
         when(repository.findAll(any(PageRequest.class))).thenReturn(metrics);
         when(mapper.mapToBaseMetricDto(any(Metric.class))).thenReturn(ModelGenerator.getBaseMetricDto(1));
 
-        Page<BaseMetricDto> result = metricService.findAll(pageNumber,pageSize);
+        Page<BaseMetricDto> result = metricService.findAll(pageNumber, pageSize);
 
         assertEquals(listMetrics.size(), result.getSize());
         verify(repository, times(1)).findAll(any(PageRequest.class));
@@ -83,17 +84,18 @@ public class MetricServiceImplTest {
     }
 
     @Test
-    @DisplayName("Проверка сохзанения метрики")
-    public void testSave() {
+    @DisplayName("Проверка сохранения метрик")
+    public void testSaveAll() {
 
         Metric metric = new Metric();
         Measurement measurement = mock(Measurement.class);
         metric.setMeasure(List.of(measurement, measurement, measurement));
-        when(repository.save(metric)).thenReturn(metric);
+        List<Metric> metrics = List.of(metric);
+        when(repository.saveAll(metrics)).thenReturn(metrics);
 
-        metricService.save(metric);
+        metricService.saveAll(metrics);
 
-        verify(repository, times(1)).save(metric);
+        verify(repository, times(1)).saveAll(metrics);
         verify(measurement, times(metric.getMeasure().size())).setMetric(metric);
     }
 }

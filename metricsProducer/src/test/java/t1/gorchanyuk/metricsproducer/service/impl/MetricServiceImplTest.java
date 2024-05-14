@@ -69,7 +69,7 @@ class MetricServiceImplTest {
 
     @Test
     @DisplayName("Проверка получения метрик из Micrometer и отправки")
-    void testGetMetricsAndSend(){
+    void testGetMetricsAndSend() {
 
         MetricFromMeter metric = new MetricFromMeter();
         List<MetricFromMeter> metrics = List.of(metric, metric);
