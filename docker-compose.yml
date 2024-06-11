@@ -5,7 +5,7 @@ volumes:
 
 services:
   producer:
-    image: 'gorchanyuk.producer:latest'
+    image: 'bezbasheniy/gorchanyuk.producer:latest'
     build:
       context: ./metricsProducer
     container_name: gorchanyuk_producer
@@ -18,7 +18,7 @@ services:
         condition: service_started
 
   consumer:
-    image: 'gorchanyuk.consumer:latest'
+    image: 'bezbasheniy/gorchanyuk.consumer:latest'
     build:
       context: ./metricsConsumer
     container_name: gorchanyuk_consumer

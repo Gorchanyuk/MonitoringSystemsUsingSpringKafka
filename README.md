@@ -53,5 +53,13 @@
 Для повышения производительности получение сообщений сервисом **consumer** осуществляется пакетами.
 
 
+## Запуск проекта в minikube (kubernetes)
+
+- Создайте кластер с помощью команды: `minikube start`
+- Закиньте сервисы в кластер с помощью команды: `kubectl apply -f kube`
+- Получить актуальный адрес для просмотра API producer'а: `minikube service producer --url`
+- Получить актуальный адрес для просмотра API consumer'а: `minikube service consumer --url`
+- Удалить приложение из кластера: `kubectl delete -f kube`
+- Для остановки кластера используйте команду: `minikube stop`
 
 

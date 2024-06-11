@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producer
+  template:
+    metadata:
+      labels:
+        app: producer
+    spec:
+      containers:
+        - name: app
+          image: bezbasheniy/gorchanyuk.producer:latest
+          ports:
+            - containerPort: 8090
+          env:
+            - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
+              value: kafka:9092
+          imagePullPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: producer
+spec:
+  selector:
+    app: producer
+  ports:
+    - port: 8090
+      targetPort: 8090
+  type: LoadBalancer
