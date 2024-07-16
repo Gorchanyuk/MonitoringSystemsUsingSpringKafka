@@ -1,0 +1,27 @@
+# Default Values for my Helm Chart
+
+consumer:
+  replicaCount: 1
+  name: consumer
+  image: bezbasheniy/gorchanyuk.consumer:latest
+  port: 8091
+  targetPort: 8091
+  env:
+    datasource:
+      url: jdbc:postgresql://postgres:5432/t1
+      username: postgres
+      password: postgres
+    kafka:
+      bootstrap_server: kafka:9092
+
+producer:
+  replicaCount: 1
+  name: producer
+  image: bezbasheniy/gorchanyuk.producer:latest
+  port: 8090
+  targetPort: 8090
+  env:
+    kafka:
+      bootstrap_server: kafka:9092
+
+

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.producer.name}}
+spec:
+  replicas: {{ .Values.producer.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{ .Values.producer.name}}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.producer.name}}
+    spec:
+      containers:
+        - name: {{ .Values.producer.name}}
+          image: {{ .Values.producer.image}}
+          ports:
+            - containerPort: {{ .Values.producer.port}}
+          env:
+            - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
+              value: {{ .Values.producer.env.kafka.bootstrap_server}}
+          imagePullPolicy: Always

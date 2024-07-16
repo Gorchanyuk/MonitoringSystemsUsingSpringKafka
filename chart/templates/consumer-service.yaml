@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.consumer.name}}
+spec:
+  selector:
+    app: {{ .Values.consumer.name}}
+  ports:
+    - port: {{ .Values.consumer.port}}
+      targetPort: {{ .Values.consumer.targetPort}}
+  type: LoadBalancer

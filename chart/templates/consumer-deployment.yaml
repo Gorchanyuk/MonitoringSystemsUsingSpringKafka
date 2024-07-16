@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.consumer.name}}
+spec:
+  replicas: {{ .Values.consumer.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.consumer.name}}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.consumer.name}}
+    spec:
+      containers:
+        - name: {{ .Values.consumer.name}}
+          image: {{ .Values.consumer.image}}
+          ports:
+            - containerPort: {{ .Values.consumer.port}}
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: {{ .Values.consumer.env.datasource.url}}
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ .Values.consumer.env.datasource.username}}
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: {{ .Values.consumer.env.datasource.password}}
+            - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
+              value: {{ .Values.consumer.env.kafka.bootstrap_server}}
+          imagePullPolicy: Always
