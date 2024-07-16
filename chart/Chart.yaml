@@ -8,3 +8,8 @@ appVersion : "0.1.0" # This is the version of the application being deployed
 maintainers:
   - name : Mikhail Gorchanyuk
     email: gorchanyk@gmail.com
+
+dependencies:
+  - name: postgresql
+    repository: https://charts.bitnami.com/bitnami
+    version: 15.5.17

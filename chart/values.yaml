@@ -24,4 +24,10 @@ producer:
     kafka:
       bootstrap_server: kafka:9092
 
+postgresql:
+  fullnameOverride: postgres
+  auth:
+    username: postgres
+    password: postgres
+    database: t1
 
