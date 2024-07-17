@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.producer.name}}
+  name: {{ .Values.name}}
 spec:
-  replicas: {{ .Values.producer.replicaCount}}
+  replicas: {{ .Values.replicaCount}}
   selector:
     matchLabels:
-      app: {{ .Values.producer.name}}
+      app: {{ .Values.name}}
   template:
     metadata:
       labels:
-        app: {{ .Values.producer.name}}
+        app: {{ .Values.name}}
     spec:
       containers:
-        - name: {{ .Values.producer.name}}
-          image: {{ .Values.producer.image}}
+        - name: {{ .Values.name}}
+          image: {{ .Values.image}}
           ports:
-            - containerPort: {{ .Values.producer.port}}
+            - containerPort: {{ .Values.port}}
           env:
             - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
-              value: {{ .Values.producer.env.kafka.bootstrap_server}}
+              value: {{ .Values.kafka.bootstrap_server}}
           imagePullPolicy: Always

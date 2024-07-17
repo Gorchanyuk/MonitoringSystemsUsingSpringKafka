@@ -18,10 +18,10 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     version: 29.3.8
 
-  - name:  App-producer
+  - name:  producer
     repository: file://../chart-producer
     version: 0.1.0
 
-  - name: App-consumer
+  - name: consumer
     repository: file://../chart-consumer
     version: 0.1.0

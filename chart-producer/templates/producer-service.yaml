@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.producer.name}}
+  name: {{ .Values.name}}
 spec:
   selector:
-    app: {{ .Values.producer.name}}
+    app: {{ .Values.name}}
   ports:
-    - port: {{ .Values.producer.port}}
-      targetPort: {{ .Values.producer.targetPort}}
+    - port: {{ .Values.port}}
+      targetPort: {{ .Values.targetPort}}
   type: LoadBalancer
