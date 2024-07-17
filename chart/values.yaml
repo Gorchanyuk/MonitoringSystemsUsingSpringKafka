@@ -31,3 +31,12 @@ postgresql:
     password: postgres
     database: t1
 
+kafka:
+  fullnameOverride: kafka
+  broker:
+    minId: 1
+  listeners:
+    client:
+      protocol: PLAINTEXT
+
+
