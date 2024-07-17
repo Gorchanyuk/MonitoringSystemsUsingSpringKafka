@@ -25,4 +25,14 @@ kafka:
     client:
       protocol: PLAINTEXT
 
+#  controller:
+#    name: producer
+#    service:
+#
+#      ports:
+#        http: 8090
+#      targetPorts:
+#        http: 8090
+
+
 

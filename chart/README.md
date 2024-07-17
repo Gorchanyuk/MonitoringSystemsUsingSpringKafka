@@ -54,7 +54,7 @@
 
 ## Получить URL для службы (service)
 Чтобы получить URL-адрес, по которому можно обращаться службе (service) из браузера или других клиентов:
-`minikube service <service_name> --url`
+`mini[Chart.yaml](..%2Fchart-producer%2FChart.yaml)kube service <service_name> --url`
 
 ## Обновление чарта новыми конфигурациями
 Чтобы обновить чарт, используйте команду:

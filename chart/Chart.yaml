@@ -25,3 +25,7 @@ dependencies:
   - name: consumer
     repository: file://../chart-consumer
     version: 0.1.0
+
+  - name: ingress-nginx
+    repository: https://kubernetes.github.io/ingress-nginx
+    version: 4.11.0
