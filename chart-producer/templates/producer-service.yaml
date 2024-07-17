@@ -8,4 +8,3 @@ spec:
   ports:
     - port: {{ .Values.port}}
       targetPort: {{ .Values.targetPort}}
-  type: LoadBalancer
