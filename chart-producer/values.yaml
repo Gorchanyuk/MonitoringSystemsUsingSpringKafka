@@ -1,0 +1,21 @@
+# Default Values for my Helm Chart
+
+producer:
+  replicaCount: 1
+  name: producer
+  image: bezbasheniy/gorchanyuk.producer:latest
+  port: 8090
+  targetPort: 8090
+  env:
+    kafka:
+      bootstrap_server: kafka:9092
+
+kafka:
+  fullnameOverride: kafka
+  broker:
+    minId: 1
+  listeners:
+    client:
+      protocol: PLAINTEXT
+
+

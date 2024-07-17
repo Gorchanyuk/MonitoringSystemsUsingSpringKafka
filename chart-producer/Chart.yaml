@@ -1,5 +1,5 @@
 apiVersion: v2
-name       : App-HelmChart
+name       : App-producer
 description: My Helm chart for Kubernetes
 type       : application
 version    : 0.1.0   # This is the Helm Chart version
@@ -17,11 +17,3 @@ dependencies:
   - name: kafka
     repository: https://charts.bitnami.com/bitnami
     version: 29.3.8
-
-  - name:  App-producer
-    repository: file://../chart-producer
-    version: 0.1.0
-
-  - name: App-consumer
-    repository: file://../chart-consumer
-    version: 0.1.0
