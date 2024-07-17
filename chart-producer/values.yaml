@@ -6,7 +6,8 @@ image: bezbasheniy/gorchanyuk.producer:latest
 port: 8090
 targetPort: 8090
 kafka:
-  bootstrap_server: kafka:9092
+  host: kafka
+  port: 9092
 
 
 

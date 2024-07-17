@@ -10,7 +10,8 @@ datasource:
   username: postgres
   password: postgres
 kafka:
-  bootstrap_server: kafka:9092
+  host: kafka
+  port: 9092
 
 
 

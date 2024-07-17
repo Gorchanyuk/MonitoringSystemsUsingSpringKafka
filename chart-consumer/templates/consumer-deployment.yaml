@@ -25,5 +25,5 @@ spec:
             - name: SPRING_DATASOURCE_PASSWORD
               value: {{ .Values.datasource.password}}
             - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
-              value: {{ .Values.kafka.bootstrap_server}}
+              value: {{ .Values.kafka.host}}:{{ .Values.kafka.port}}
           imagePullPolicy: Always
