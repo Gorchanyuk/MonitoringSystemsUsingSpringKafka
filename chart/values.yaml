@@ -29,6 +29,7 @@ ingressconsumer:
   controller:
     ingressClass: consumer
     ingressClassResource:
+      controllerValue: k8s.io/ingressconsumer
       name: consumer
     service:
       ports:
@@ -37,8 +38,8 @@ ingressconsumer:
 ingressproducer:
   controller:
     ingressClass: producer
-    priorityClassName:
     ingressClassResource:
+      controllerValue: k8s.io/ingressproducer
       name: producer
     service:
       ports:
