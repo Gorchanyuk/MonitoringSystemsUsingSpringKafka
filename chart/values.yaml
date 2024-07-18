@@ -25,16 +25,19 @@ kafka:
     client:
       protocol: PLAINTEXT
 
-ingressconsumer:
-  controller:
-    ingressClassResource:
-      name: consumer
-    service:
-      ports:
-        http: 8091
+#ingressconsumer:
+#  controller:
+#    ingressClass: consumer
+#    ingressClassResource:
+#      name: consumer
+#    service:
+#      ports:
+#        http: 8091
 
 ingressproducer:
   controller:
+    ingressClass: producer
+    priorityClassName:
     ingressClassResource:
       name: producer
     service:
