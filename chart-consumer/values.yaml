@@ -2,7 +2,7 @@
 
 replicaCount: 1
 name: consumer
-image: bezbasheniy/gorchanyuk.consumer:latest
+image: bezbasheniy/gorchanyuk.consumer:0.1.0
 port: 8091
 targetPort: 8091
 datasource:

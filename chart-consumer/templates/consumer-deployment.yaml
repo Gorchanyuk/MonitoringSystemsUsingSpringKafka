@@ -18,12 +18,12 @@ spec:
           ports:
             - containerPort: {{ .Values.port}}
           env:
-            - name: SPRING_DATASOURCE_URL
+            - name: DB_URL
               value: jdbc:postgresql://{{ .Values.datasource.host}}:5432/t1
-            - name: SPRING_DATASOURCE_USERNAME
+            - name: DB_USERNAME
               value: {{ .Values.datasource.username}}
-            - name: SPRING_DATASOURCE_PASSWORD
+            - name: DB_PASSWORD
               value: {{ .Values.datasource.password}}
-            - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
+            - name: KAFKA_BOOTSTRAP-SERVERS
               value: {{ .Values.kafka.host}}:{{ .Values.kafka.port}}
           imagePullPolicy: Always

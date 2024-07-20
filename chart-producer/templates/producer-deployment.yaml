@@ -18,6 +18,6 @@ spec:
           ports:
             - containerPort: {{ .Values.port}}
           env:
-            - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
+            - name: KAFKA_BOOTSTRAP-SERVERS
               value: {{ .Values.kafka.host}}:{{ .Values.kafka.port}}
           imagePullPolicy: Always

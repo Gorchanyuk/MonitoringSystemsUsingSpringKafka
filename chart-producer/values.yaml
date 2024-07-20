@@ -2,7 +2,7 @@
 
 replicaCount: 1
 name: producer
-image: bezbasheniy/gorchanyuk.producer:latest
+image: bezbasheniy/gorchanyuk.producer:0.1.0
 port: 8090
 targetPort: 8090
 kafka:

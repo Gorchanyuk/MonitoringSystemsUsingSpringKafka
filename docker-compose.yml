@@ -5,20 +5,20 @@ volumes:
 
 services:
   producer:
-    image: 'bezbasheniy/gorchanyuk.producer:latest'
+    image: 'bezbasheniy/gorchanyuk.producer:0.1.0'
     build:
       context: ./metricsProducer
     container_name: gorchanyuk_producer
     ports:
       - "8090:8090"
     environment:
-      SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
+      KAFKA_BOOTSTRAP-SERVERS: kafka:9092
     depends_on:
       kafka:
         condition: service_started
 
   consumer:
-    image: 'bezbasheniy/gorchanyuk.consumer:latest'
+    image: 'bezbasheniy/gorchanyuk.consumer:0.1.0'
     build:
       context: ./metricsConsumer
     container_name: gorchanyuk_consumer
@@ -30,15 +30,15 @@ services:
       kafka:
         condition: service_started
     environment:
-      SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
-      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/t1_home_work_2
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
+      KAFKA_BOOTSTRAP-SERVERS: kafka:9092
+      DB_URL: jdbc:postgresql://database:5432/t1_home_work_2
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
 
 
   database:
     container_name: database
-    image: postgres:alpine
+    image: postgres:16-alpine3.20
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -84,4 +84,25 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     volumes:
       - kafka_gorch:/var/lib/kafka/data
+
+  grafana:
+    build:
+      context: ./grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/volumes:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/volumes:/prometheus
+
 
