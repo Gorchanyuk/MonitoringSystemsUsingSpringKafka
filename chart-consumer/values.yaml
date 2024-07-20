@@ -9,6 +9,7 @@ datasource:
   host: host
   username: postgres
   password: postgres
+  database: t1
 kafka:
   host: kafka
   port: 9092

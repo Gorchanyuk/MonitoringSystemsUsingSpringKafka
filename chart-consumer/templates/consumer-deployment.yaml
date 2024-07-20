@@ -19,7 +19,7 @@ spec:
             - containerPort: {{ .Values.port}}
           env:
             - name: DB_URL
-              value: jdbc:postgresql://{{ .Values.datasource.host}}:5432/t1
+              value: jdbc:postgresql://{{ .Values.datasource.host}}:5432/{{ .Values.datasource.database}}
             - name: DB_USERNAME
               value: {{ .Values.datasource.username}}
             - name: DB_PASSWORD

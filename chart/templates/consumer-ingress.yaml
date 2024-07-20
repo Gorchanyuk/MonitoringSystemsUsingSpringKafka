@@ -2,10 +2,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.ingressconsumer.controller.ingressClassResource.name}}
-  annotations:
-    kubernetes.io/ingress.class: {{ .Values.ingressconsumer.controller.ingressClassResource.name}}
-{{/*  labels:*/}}
-{{/*    app: qwerty*/}}
 spec:
   ingressClassName: {{ .Values.ingressconsumer.controller.ingressClassResource.name}}
   rules:
@@ -18,5 +14,3 @@ spec:
                 name: {{ .Values.consumer.name}}
                 port:
                   number: {{ .Values.consumer.port}}
-
-
