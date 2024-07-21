@@ -45,4 +45,12 @@ ingressproducer:
       ports:
         http: 8090
 
+prometheus:
+  extraScrapeConfigs: |
+    - job_name: 'sample_monitoring'
+      metrics_path: /actuator/prometheus
+      scrape_interval: 5s
+      static_configs:
+        - targets: [ 'producer:8090', 'consumer:8091' ]
+
 
