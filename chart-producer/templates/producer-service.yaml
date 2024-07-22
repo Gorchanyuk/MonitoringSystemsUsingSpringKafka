@@ -2,6 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.name}}
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/scheme: "http"
+    prometheus.io/path: "/actuator/prometheus"
+    prometheus.io/scrape_interval: "5s"
 spec:
   selector:
     app: {{ .Values.name}}
