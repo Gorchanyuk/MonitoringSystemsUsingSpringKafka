@@ -24,6 +24,9 @@ kafka:
   listeners:
     client:
       protocol: PLAINTEXT
+  metrics:
+    jmx:
+      enabled: true
 
 ingressconsumer:
   controller:
