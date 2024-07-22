@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.ingressprometheus.controller.ingressClassResource.name}}
+spec:
+  ingressClassName: {{ .Values.ingressprometheus.controller.ingressClassResource.name}}
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.prometheus.server.fullnameOverride}}
+                port:
+                  number: {{ .Values.prometheus.server.service.servicePort}}

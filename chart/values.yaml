@@ -45,4 +45,19 @@ ingressproducer:
       ports:
         http: 8090
 
+ingressprometheus:
+  controller:
+    ingressClass: prometheus
+    ingressClassResource:
+      controllerValue: k8s.io/ingressprometheus
+      name: prometheus
+    service:
+      ports:
+        http: 9090
+
+prometheus:
+  server:
+    fullnameOverride: prometheus
+
+
 
