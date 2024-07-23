@@ -28,6 +28,7 @@ kafka:
     jmx:
       enabled: true
 
+
 ingressconsumer:
   controller:
     ingressClass: consumer

@@ -30,16 +30,16 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: {{ .Values.port}}
-            initialDelaySeconds: 60
-            periodSeconds: 10
+            initialDelaySeconds: 90
+            periodSeconds: 20
             failureThreshold: 5
-            timeoutSeconds: 2
+            timeoutSeconds: 5
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: {{ .Values.port}}
-            initialDelaySeconds: 60
-            periodSeconds: 10
+            initialDelaySeconds: 90
+            periodSeconds: 20
             successThreshold: 1
             failureThreshold: 5
-            timeoutSeconds: 2
+            timeoutSeconds: 5
