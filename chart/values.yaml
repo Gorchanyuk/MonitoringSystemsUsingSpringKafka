@@ -5,10 +5,16 @@ consumer:
     host: postgres
   kafka:
     host: kafka
+  jaeger:
+    host: host
+    port: 4318
 
 producer:
   kafka:
     host: kafka
+  jaeger:
+    host: host
+    port: 4318
 
 postgresql:
   fullnameOverride: postgres

@@ -8,6 +8,9 @@ targetPort: 8090
 kafka:
   host: kafka
   port: 9092
+jaeger:
+  host: host
+  port: 4318
 
 
 
