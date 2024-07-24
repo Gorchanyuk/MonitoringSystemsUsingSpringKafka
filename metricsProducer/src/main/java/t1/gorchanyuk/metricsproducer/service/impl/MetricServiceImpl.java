@@ -25,15 +25,9 @@ public class MetricServiceImpl implements MetricService {
     private final MicrometerServiceImpl micrometerService;
     private final TopicNameProperties properties;
 
-    /**
-     * Example of using an annotation to observe methods
-     * <name> will be used as a metric name
-     * <contextualName> will be used as a span  name
-     * <lowCardinalityKeyValues> will be set as a tag for both metric & span
-     */
-    @Observed(name = "sendMetric",
+    @Observed(name = "MetricService.sendMetric",
             contextualName = "sendMetric",
-            lowCardinalityKeyValues = {"nameMethod", "sendMetric"})
+            lowCardinalityKeyValues = {"package", "service"})
     @Override
     public void sendMetric(Metric metric) {
         CompletableFuture<SendResult<String, Metric>> future = kafkaTemplate.send(properties.getMetric(), metric);
@@ -48,13 +42,13 @@ public class MetricServiceImpl implements MetricService {
         }
     }
 
-    @Observed(name = "getMetricsAndSend",
+    @Observed(name = "MetricService.getMetricsAndSend111",
             contextualName = "getMetricsAndSend",
-            lowCardinalityKeyValues = {"nameMethod", "getMetricsAndSend"})
+            lowCardinalityKeyValues = {"package", "service"})
     @Override
     public void getMetricsAndSend() {
 
         List<MetricFromMeter> metrics = micrometerService.getMetrics();
-        metrics.forEach(metric->kafkaTemplate.send(properties.getMetric(), metric));
+        metrics.forEach(metric -> kafkaTemplate.send(properties.getMetric(), metric));
     }
 }

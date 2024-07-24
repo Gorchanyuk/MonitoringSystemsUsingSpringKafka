@@ -1,6 +1,7 @@
 package t1.gorchanyuk.metricsproducer.service.impl;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class MicrometerServiceImpl implements MicrometerService {
     private final MeterRegistry meterRegistry;
     private final MetricMapper mapper;
 
+    @Observed(name = "MicrometerService.getMetrics",
+            contextualName = "getMetrics",
+            lowCardinalityKeyValues = {"package", "service"})
     @Override
     public List<MetricFromMeter> getMetrics() {
         return meterRegistry.getMeters().stream()
