@@ -65,6 +65,16 @@ ingressprometheus:
       ports:
         http: 9090
 
+ingressjaeger:
+  controller:
+    ingressClass: jaeger
+    ingressClassResource:
+      controllerValue: k8s.io/ingressjaeger
+      name: jaeger
+    service:
+      ports:
+        http: 16686
+
 prometheus:
   server:
     fullnameOverride: prometheus
