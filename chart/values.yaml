@@ -6,14 +6,14 @@ consumer:
   kafka:
     host: kafka
   jaeger:
-    host: host
+    host: app-jaeger-collector
     port: 4318
 
 producer:
   kafka:
     host: kafka
   jaeger:
-    host: host
+    host: app-jaeger-collector
     port: 4318
 
 postgresql:
