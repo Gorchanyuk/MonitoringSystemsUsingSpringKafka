@@ -2,6 +2,8 @@ package t1.gorchanyuk.metricsconsumer.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.observation.Observation;
+import io.micrometer.observation.ObservationRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -26,8 +28,16 @@ public class KafkaService {
     private final KafkaTemplate<String, String> template;
     private final TopicNameProperties properties;
 
+    private final ObservationRegistry registry;
+
     @KafkaListener(topics = "${topic.name.metric}", id = "metric-consumer")
-    public void listenMetrics(List<String> messages) {
+    public void listenMetricsAndObserved(List<String> messages) {
+        Observation.createNotStarted("listenMetricsAndObserved", registry)
+                .contextualName("listen-metrics-and-observed")
+                .observe(() -> listenMetrics(messages));
+    }
+
+    private void listenMetrics(List<String> messages) {
         log.info("Получено {} сообщенй из Kafka для обработки и сохранения в БД", messages.size());
         List<Metric> metrics = messages.stream()
                 .flatMap(message -> {

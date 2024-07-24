@@ -46,7 +46,7 @@ public class KafkaServiceTest {
         List<Metric> metrics = List.of(metric);
         when(mapper.readValue(message, Metric.class)).thenReturn(metric);
 
-        kafkaService.listenMetrics(List.of(message));
+        kafkaService.listenMetricsAndObserved(List.of(message));
 
         verify(mapper, times(1)).readValue(message, Metric.class);
         verify(metricService, times(1)).saveAll(metrics);
@@ -63,7 +63,7 @@ public class KafkaServiceTest {
         when(mapper.readValue(invalidMessage, Metric.class)).thenThrow(JsonProcessingException.class);
         when(properties.getMetricDlt()).thenReturn(topicNameDLT);
 
-        kafkaService.listenMetrics(List.of(invalidMessage));
+        kafkaService.listenMetricsAndObserved(List.of(invalidMessage));
 
         verify(template, times(1)).send(topicNameDLT, invalidMessage);
     }
