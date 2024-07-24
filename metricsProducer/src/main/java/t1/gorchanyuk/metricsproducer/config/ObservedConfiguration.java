@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration(proxyBeanMethods = false)
-class MyConfiguration {
+class ObservedConfiguration {
     // Чтобы получить @Observed поддержку, нам необходимо зарегистрировать этот аспект
     @Bean
     ObservedAspect observedAspect(ObservationRegistry observationRegistry) {
