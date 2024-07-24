@@ -12,6 +12,7 @@ services:
     ports:
       - "8090:8090"
     environment:
+      TRACING_URL: http://jaeger:4318/v1/traces
       KAFKA_BOOTSTRAP-SERVERS: kafka:9092
     depends_on:
       kafka:
@@ -30,6 +31,7 @@ services:
       kafka:
         condition: service_started
     environment:
+      TRACING_URL: http://jaeger:4318/v1/traces
       KAFKA_BOOTSTRAP-SERVERS: kafka:9092
       DB_URL: jdbc:postgresql://database:5432/t1_home_work_2
       DB_USERNAME: postgres
@@ -105,4 +107,12 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./prometheus/volumes:/prometheus
 
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686" # the jaeger UI
+      - "4317:4317" # the OpenTelemetry collector grpc
+      - "4318:4318" # the OpenTelemetry collector http
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
 
