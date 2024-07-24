@@ -1,5 +1,6 @@
 package t1.gorchanyuk.metricsproducer.service.impl;
 
+import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -24,6 +25,15 @@ public class MetricServiceImpl implements MetricService {
     private final MicrometerServiceImpl micrometerService;
     private final TopicNameProperties properties;
 
+    /**
+     * Example of using an annotation to observe methods
+     * <name> will be used as a metric name
+     * <contextualName> will be used as a span  name
+     * <lowCardinalityKeyValues> will be set as a tag for both metric & span
+     */
+    @Observed(name = "sendMetric",
+            contextualName = "sendMetric",
+            lowCardinalityKeyValues = {"nameMethod", "sendMetric"})
     @Override
     public void sendMetric(Metric metric) {
         CompletableFuture<SendResult<String, Metric>> future = kafkaTemplate.send(properties.getMetric(), metric);
@@ -38,6 +48,9 @@ public class MetricServiceImpl implements MetricService {
         }
     }
 
+    @Observed(name = "getMetricsAndSend",
+            contextualName = "getMetricsAndSend",
+            lowCardinalityKeyValues = {"nameMethod", "getMetricsAndSend"})
     @Override
     public void getMetricsAndSend() {
 
