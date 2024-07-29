@@ -7,20 +7,28 @@
     </appender>
 
     <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
-        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="LOGSTASH" />
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/producer.log</file>
-        <append>true</append>
-        <encoder>
-            <pattern>%d{dd.MM.yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:5044</destination>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp />
+                <logger />
+                <thread />
+                <level />
+                <message />
+                <logstashMarkers />
+                <arguments />
+                <stackTrace />
+            </providers>
         </encoder>
     </appender>
 
     <appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
         <smtpHost>${spring.mail.host}</smtpHost>
-        <smtpPort>${spring.mail.port}</smtpPort>
+        <smtpPort>587</smtpPort>
         <STARTTLS>true</STARTTLS>
         <asynchronousSending>false</asynchronousSending>
         <username>${spring.mail.username}</username>
@@ -37,15 +45,16 @@
 
     <root level="info">
         <appender-ref ref="ASYNC"/>
+        <appender-ref ref="CONSOLE" />
     </root>
 
     <logger name="t1.gorchanyuk.metricsproducer" level="INFO">
         <appender-ref ref="ASYNC"/>
+        <appender-ref ref="CONSOLE" />
     </logger>
 
     <logger name="t1.gorchanyuk" level="INFO" additivity="false">
         <appender-ref ref="EMAIL"/>
-        <appender-ref ref="FILE"/>
     </logger>
 
 </configuration>
