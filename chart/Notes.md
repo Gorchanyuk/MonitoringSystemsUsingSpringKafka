@@ -24,3 +24,4 @@
 
 ### Logstash 
 - https://auth0.com/blog/spring-boot-logs-aggregation-and-monitoring-using-elk-stack/
+- https://medium.com/engineered-publicis-sapient/consistent-logging-with-logstash-for-microservices-sharing-a-kubernetes-cluster-7c1aee7ec42f
