@@ -17,6 +17,8 @@ services:
     depends_on:
       kafka:
         condition: service_started
+      jaeger:
+        condition: service_started
 
   consumer:
     image: 'bezbasheniy/gorchanyuk.consumer:0.1.0'
@@ -29,6 +31,8 @@ services:
       database:
         condition: service_healthy
       kafka:
+        condition: service_started
+      jaeger:
         condition: service_started
     environment:
       TRACING_URL: http://jaeger:4318/v1/traces
