@@ -120,3 +120,12 @@ services:
     environment:
       - COLLECTOR_OTLP_ENABLED=true
 
+  logstash:
+    image: logstash:8.14.3
+    volumes:
+      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+      - ./logs/:/usr/share/logstash/logs/
+    ports:
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
