@@ -1,13 +1,17 @@
 <configuration>
 
-    <appender name="out" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %5p [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <timestamp key="byStartDate" datePattern="yyyy-MM-dd'_'HH-mm-ss.SSS"/>
-    <appender name="file" class="ch.qos.logback.core.FileAppender">
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="CONSOLE" />
+    </appender>
+
+    <timestamp key="byStartDate" datePattern="yyyy-MM-dd"/>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/logs_${byStartDate}.log</file>
         <append>true</append>
         <encoder>
@@ -15,7 +19,7 @@
         </encoder>
     </appender>
 
-    <appender name="emailAppenderGmail" class="ch.qos.logback.classic.net.SMTPAppender">
+    <appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
         <smtpHost>${mail.host}</smtpHost>
         <smtpPort>587</smtpPort>
         <STARTTLS>true</STARTTLS>
@@ -30,12 +34,16 @@
     </appender>
 
     <root level="info">
-        <appender-ref ref="out"/>
+        <appender-ref ref="ASYNC"/>
     </root>
 
-    <logger name="t1.gorchanyuk" additivity="false" level="TRACE">
-        <appender-ref ref="emailAppenderGmail"/>
-        <appender-ref ref="file"/>
+    <logger name="t1.gorchanyuk.metricsproducer" level="INFO" additivity="true">
+        <appender-ref ref="ASYNC"/>
+    </logger>
+
+    <logger name="t1.gorchanyuk" level="WARN" additivity="true">
+        <appender-ref ref="EMAIL"/>
+        <appender-ref ref="FILE"/>
     </logger>
 
 </configuration>
