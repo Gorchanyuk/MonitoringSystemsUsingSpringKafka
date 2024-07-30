@@ -15,6 +15,9 @@ producer:
   jaeger:
     host: app-jaeger-collector
     port: 4318
+  logstash:
+    host: logstash
+    port: 5044
 
 postgresql:
   fullnameOverride: postgres
