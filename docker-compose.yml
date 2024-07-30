@@ -20,6 +20,8 @@ services:
         condition: service_started
       jaeger:
         condition: service_started
+      logstash:
+        condition: service_started
 
   consumer:
     image: 'bezbasheniy/gorchanyuk.consumer:0.1.0'
