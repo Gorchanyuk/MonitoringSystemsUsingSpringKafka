@@ -50,5 +50,6 @@ public class MetricServiceImpl implements MetricService {
 
         List<MetricFromMeter> metrics = micrometerService.getMetrics();
         metrics.forEach(metric -> kafkaTemplate.send(properties.getMetric(), metric));
+        log.info("Метрики из meterRegistry отправленны в Kafka");
     }
 }

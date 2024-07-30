@@ -24,6 +24,7 @@ public class MicrometerServiceImpl implements MicrometerService {
             lowCardinalityKeyValues = {"package", "service"})
     @Override
     public List<MetricFromMeter> getMetrics() {
+        log.info("Получение метрик из meterRegistry");
         return meterRegistry.getMeters().stream()
                 .map(mapper::mapToMetricFromMeter)
                 .toList();
