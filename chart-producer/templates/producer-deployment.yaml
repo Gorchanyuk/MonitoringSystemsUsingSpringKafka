@@ -23,6 +23,8 @@ spec:
           ports:
             - containerPort: {{ .Values.port}}
           env:
+            - name: LOGSTASH_URL
+              value: {{ .Values.logstash.host}}:{{ .Values.logstash.port}}
             - name: TRACING_URL
               value: http://{{ .Values.jaeger.host}}:{{ .Values.jaeger.port}}/v1/traces
             - name: KAFKA_BOOTSTRAP-SERVERS

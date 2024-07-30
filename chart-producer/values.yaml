@@ -9,8 +9,11 @@ kafka:
   host: kafka
   port: 9092
 jaeger:
-  host: host
+  host: jaeger
   port: 4318
+logstash:
+  host: logstash
+  port: 5044
 
 
 

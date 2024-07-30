@@ -12,6 +12,7 @@ services:
     ports:
       - "8090:8090"
     environment:
+      LOGSTASH_URL: logstash:5044
       TRACING_URL: http://jaeger:4318/v1/traces
       KAFKA_BOOTSTRAP-SERVERS: kafka:9092
     depends_on:
