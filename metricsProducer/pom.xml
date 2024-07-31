@@ -88,14 +88,14 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <build>
+        <finalName>gorchanyuk.producer</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <finalName>producer-kafka-exec</finalName>
+                    <finalName>${project.build.finalName}</finalName>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -128,6 +128,28 @@
                             -Amapstruct.defaultComponentModel=spring
                         </compilerArg>
                     </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.45.0</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>bezbasheniy/${project.build.finalName}:${project.version}</name>
+                            <build>
+                                <dockerFile>${project.basedir}/Dockerfile</dockerFile>
+                            </build>
+                        </image>
+                    </images>
+                    <authConfig>
+                        <username>${env.DOCKER_LOGIN}</username>
+                        <password>${env.DOCKER_PASSWORD}</password>
+                    </authConfig>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
                 </configuration>
             </plugin>
         </plugins>

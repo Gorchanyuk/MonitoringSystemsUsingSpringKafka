@@ -6,5 +6,6 @@ COPY src src
 RUN mvn -T 10C -Dmaven.test.skip -DskipTests -o package
 
 FROM eclipse-temurin:17-jre-alpine
-COPY --from=build /build/target/producer-kafka-exec.jar /app.jar
+ARG JAR_FILE
+COPY --from=build /build/target/${JAR_FILE} /app.jar
 ENTRYPOINT ["java", "-jar", "/app.jar"]
