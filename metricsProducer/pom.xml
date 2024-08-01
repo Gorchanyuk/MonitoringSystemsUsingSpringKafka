@@ -10,7 +10,7 @@
     </parent>
     <groupId>t1.gorchanyuk</groupId>
     <artifactId>metricsProducer</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.6.1-SNAPSHOT-SNAPSHOT</version>
     <name>metricsProducer</name>
     <description>metricsProducer</description>
     <properties>
@@ -151,6 +151,33 @@
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.17.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <executable>sh</executable>
+                    <arguments>
+                        <argument>-c</argument>
+                        <argument>./incr_version.sh</argument>
+                    </arguments>
+                    <workingDirectory>${project.basedir}</workingDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>increment-version</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
