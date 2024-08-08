@@ -112,11 +112,12 @@ function build_all() {
   hash=$(get_hash "${CDIR}" "${my_array[@]}")
   check_tag "${repoName}/${imageName}" "${hash}"
 
-  mvn docker:build -Dproject.image.name="${imageName}" -Dtag.version="${hash}"
+  mvn docker:build -Dproject.image.name="${repoName}/${imageName}" -Dtag.version="${hash}"
   status=$?
 
   if [ "${status}" -eq 1 ]; then
     hash="Error_${hash}"
+    echo "Произошла ошибка во время сборки образа"
   fi
 
   add_tag "${hash}"
