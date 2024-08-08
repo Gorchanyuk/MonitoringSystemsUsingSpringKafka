@@ -1,11 +1,12 @@
 #!/bin/bash
 
 CDIR=$(pwd)
+chartName=producer
 imageName=producer
 repoName=bezbasheniy
 HELM_NAME=app
 CHART_FOLDER="./../chart"
-
+MY_VALUES="./../my.yaml"
 
 #Проверка, что находимся в мастере и что совпадаем с удаленным репо
 function is_master() {
@@ -113,15 +114,16 @@ function add_tag() {
 function helm_run() {
   STANDID=$1
   echo "### HELM: update dependency  ============================================"
-#  helm dependency update $STANDID
+#  TODO
+  #  helm dependency update $STANDID
 
   HELM_EXISTS=$(helm ls | grep -c ${HELM_NAME})
   if [ "${HELM_EXISTS}" == 0 ]; then
     echo "### HELM: install  ====================================================="
-    helm install ${HELM_NAME} "$STANDID" -f ./my.yaml
+    helm install ${HELM_NAME} "$STANDID" -f "$MY_VALUES"
   else
     echo "### HELM: upgrade  ====================================================="
-    helm  upgrade ${HELM_NAME} $STANDID -f ./my.yaml
+    helm upgrade ${HELM_NAME} $STANDID -f "$MY_VALUES"
   fi
 }
 
@@ -142,6 +144,10 @@ function build_all() {
 
   add_tag "${hash}"
 
+  if [ ! -f "$MY_VALUES" ]; then
+    touch "$MY_VALUES"
+  fi
+  IMAGE_VERSION="${repoName}/${imageName}:${hash}" yq e -i ".${chartName}.image = strenv(IMAGE_VERSION)" "$MY_VALUES"
   helm_run "${CHART_FOLDER}"
 }
 
