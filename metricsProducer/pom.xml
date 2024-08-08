@@ -18,7 +18,7 @@
         <springdoc-openapi.version>2.5.0</springdoc-openapi.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <tag.version>0.0.1</tag.version>
-        <project.image.name>${project.build.finalName}</project.image.name>
+        <project.image.name>bezbasheniy/${project.build.finalName}</project.image.name>
     </properties>
     <dependencies>
         <dependency>
@@ -139,7 +139,7 @@
                 <configuration>
                     <images>
                         <image>
-                            <name>bezbasheniy/${project.image.name}:${tag.version}</name>
+                            <name>${project.image.name}:${tag.version}</name>
                             <build>
                                 <dockerFile>${project.basedir}/Dockerfile</dockerFile>
                             </build>
