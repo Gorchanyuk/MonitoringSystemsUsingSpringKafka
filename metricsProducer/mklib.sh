@@ -1,9 +1,11 @@
 #!/bin/bash
 
 CDIR=$(pwd)
-declare -a my_array=("/src" "/pom.xml" "/Dockerfile")
 imageName=producer
 repoName=bezbasheniy
+HELM_NAME=app
+CHART_FOLDER="./../chart"
+
 
 #Проверка, что находимся в мастере и что совпадаем с удаленным репо
 function is_master() {
@@ -40,9 +42,10 @@ function is_committed() {
 
 #Вычисляем хеш по файлам и пакетам
 function get_hash() {
+  declare -a my_array=("/src" "/pom.xml" "/Dockerfile")
   total_hash=""
 
-  for element in "${@:2}"; do
+  for element in "${my_array[@]}"; do
     item="$1/$element"
     if [ ! -e "$item" ]; then
       continue
@@ -97,7 +100,7 @@ function check_tag() {
   fi
   echo "Сборка не найдена"
 }
-
+# Добавляет тег к комиту
 function add_tag() {
   tag_name=$1
   git tag -a "${tag_name}" -m "Соответствует образу сборки с тегом - ${tag_name}"
@@ -106,10 +109,27 @@ function add_tag() {
   fi
 }
 
+# Запуск helm чарта
+function helm_run() {
+  STANDID=$1
+  echo "### HELM: update dependency  ============================================"
+#  helm dependency update $STANDID
+
+  HELM_EXISTS=$(helm ls | grep -c ${HELM_NAME})
+  if [ "${HELM_EXISTS}" == 0 ]; then
+    echo "### HELM: install  ====================================================="
+    helm install ${HELM_NAME} "$STANDID" -f ./my.yaml
+  else
+    echo "### HELM: upgrade  ====================================================="
+    helm  upgrade ${HELM_NAME} $STANDID -f ./my.yaml
+  fi
+}
+
+# Финальная функция, запускает сборку
 function build_all() {
   is_master && is_committed
 
-  hash=$(get_hash "${CDIR}" "${my_array[@]}")
+  hash=$(get_hash "${CDIR}")
   check_tag "${repoName}/${imageName}" "${hash}"
 
   mvn docker:build -Dproject.image.name="${repoName}/${imageName}" -Dtag.version="${hash}"
@@ -121,6 +141,8 @@ function build_all() {
   fi
 
   add_tag "${hash}"
+
+  helm_run "${CHART_FOLDER}"
 }
 
 build_all
