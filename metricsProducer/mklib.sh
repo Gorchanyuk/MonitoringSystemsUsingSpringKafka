@@ -101,6 +101,9 @@ function check_tag() {
 function add_tag() {
   tag_name=$1
   git tag -a "${tag_name}" -m "Соответствует образу сборки с тегом - ${tag_name}"
+  if [ $? -eq 1 ]; then
+    echo "Тег ${tag_name} уже существует"
+  fi
 }
 
 function build_all() {
@@ -109,7 +112,7 @@ function build_all() {
   hash=$(get_hash "${CDIR}" "${my_array[@]}")
   check_tag "${repoName}/${imageName}" "${hash}"
 
-  mvn dockerfile:build -Dproject.image.name="${imageName}" -Dtag.version="${hash}"
+  mvn docker:build -Dproject.image.name="${imageName}" -Dtag.version="${hash}"
   status=$?
 
   if [ "${status}" -eq 1 ]; then
@@ -117,7 +120,6 @@ function build_all() {
   fi
 
   add_tag "${hash}"
-
 }
 
 build_all
