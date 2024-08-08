@@ -29,7 +29,7 @@ spec:
               value: http://{{ .Values.jaeger.host}}:{{ .Values.jaeger.port}}/v1/traces
             - name: KAFKA_BOOTSTRAP-SERVERS
               value: {{ .Values.kafka.host}}:{{ .Values.kafka.port}}
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
