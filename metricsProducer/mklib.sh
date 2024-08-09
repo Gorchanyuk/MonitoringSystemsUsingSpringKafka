@@ -114,16 +114,16 @@ function add_tag() {
 function helm_run() {
   STANDID=$1
   echo "### HELM: update dependency  ============================================"
-#  TODO
-  #  helm dependency update $STANDID
+  #  TODO Нужно раскоментировать
+  #    helm dependency update $STANDID
 
   HELM_EXISTS=$(helm ls | grep -c ${HELM_NAME})
   if [ "${HELM_EXISTS}" == 0 ]; then
     echo "### HELM: install  ====================================================="
-    helm install ${HELM_NAME} "$STANDID" -f "$MY_VALUES"
+    helm install ${HELM_NAME} "$STANDID" -f $MY_VALUES
   else
     echo "### HELM: upgrade  ====================================================="
-    helm upgrade ${HELM_NAME} $STANDID -f "$MY_VALUES"
+    helm upgrade ${HELM_NAME} $STANDID -f $MY_VALUES
   fi
 }
 
@@ -144,10 +144,10 @@ function build_all() {
 
   add_tag "${hash}"
 
-  if [ ! -f "$MY_VALUES" ]; then
-    touch "$MY_VALUES"
+  if [ ! -f $MY_VALUES ]; then
+    touch $MY_VALUES
   fi
-  IMAGE_VERSION="${repoName}/${imageName}:${hash}" yq e -i ".${chartName}.image = strenv(IMAGE_VERSION)" "$MY_VALUES"
+  IMAGE_VERSION="${repoName}/${imageName}:${hash}" yq e -i ".${chartName}.image = strenv(IMAGE_VERSION)" $MY_VALUES
   helm_run "${CHART_FOLDER}"
 }
 
