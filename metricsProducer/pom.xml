@@ -167,14 +167,14 @@
                     <executable>sh</executable>
                     <arguments>
                         <argument>-c</argument>
-                        <argument>./incr_version.sh</argument>
+                        <argument>./producer-exec.sh</argument>
                     </arguments>
                     <workingDirectory>${project.basedir}</workingDirectory>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>increment-version</id>
-                        <phase>deploy</phase>
+                        <id>auto-deploy</id>
+                        <phase>install</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>

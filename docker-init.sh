@@ -6,7 +6,7 @@ MY_VALUES="/opt/my-chart/my.yaml"
 
 cd /opt/my-chart || exit
 
-#Задаем конфигурационный файл для kubectl
+#Задаем конфигурацию для kubectl
 kubectl config set-cluster minikube --server=https://minikube:8443 --certificate-authority=/opt/config/ca.crt
 kubectl config set-credentials minikube --client-key=/opt/config/client.key --client-certificate=/opt/config/client.crt
 kubectl config set-context minikube --cluster=minikube --user=minikube

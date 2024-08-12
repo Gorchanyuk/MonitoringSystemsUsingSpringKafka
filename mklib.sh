@@ -1,9 +1,6 @@
 #!/bin/bash
 
 CDIR=$(pwd)
-CHART_NAME=producer
-IMAGE_NAME=producer
-PROJECT_FOLDER=metricsProducer
 REPO_NAME=bezbasheniy
 MY_VALUES="./my.yaml"
 
@@ -117,12 +114,10 @@ add_tag() {
 # Финальная функция, запускает сборку
 build_all() {
   local HASH
-    is_master && is_committed
+  is_master && is_committed
 
-  HASH=$(get_hash "${CDIR}/${PROJECT_FOLDER}")
+  HASH=$(get_hash "${CDIR}")
   check_tag "${REPO_NAME}/${IMAGE_NAME}" "${HASH}"
-
-  cd "./${PROJECT_FOLDER}" || exit
 
   mvn docker:build docker:push -Dproject.image.name="${REPO_NAME}/${IMAGE_NAME}" -Dtag.version="${HASH}"
   status=$?
