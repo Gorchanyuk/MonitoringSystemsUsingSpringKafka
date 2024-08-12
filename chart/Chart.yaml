@@ -55,7 +55,7 @@ dependencies:
     version: 3.1.1
 
   - name: logstash
-    repository: https://helm.elastic.co
-    version: 8.5.1
+    repository: https://charts.bitnami.com/bitnami
+    version: 6.3.2
 
 

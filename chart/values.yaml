@@ -103,17 +103,12 @@ logstash:
         port: 5044
         protocol: TCP
         targetPort: 5044
-  logstashPipeline:
-    logstash.conf: |
-      input {
-        tcp {
+  input: |-
+    tcp {
           port => 5044
           codec => json_lines
-        }
-      }
-      output { 
-        stdout { codec => rubydebug }
-      }
-    
+    }
+  output: |-
+    stdout { codec => rubydebug }
 
 
