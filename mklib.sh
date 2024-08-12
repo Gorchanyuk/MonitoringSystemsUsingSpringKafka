@@ -4,9 +4,8 @@ CDIR=$(pwd)
 chartName=producer
 imageName=producer
 repoName=bezbasheniy
-HELM_NAME=app
-CHART_FOLDER="./../chart"
-MY_VALUES="./../my.yaml"
+projectFolder=metricsProducer
+MY_VALUES="./my.yaml"
 
 #Проверка, что находимся в мастере и что совпадаем с удаленным репо
 is_master() {
@@ -46,7 +45,7 @@ is_committed() {
 
 #Вычисляем хеш по файлам и пакетам
 get_hash() {
-  local my_array=("/src" "/pom.xml" "/Dockerfile")
+  local my_array=("src" "pom.xml" "Dockerfile")
   local total_hash=""
 
   for element in "${my_array[@]}"; do
@@ -115,48 +114,32 @@ add_tag() {
   fi
 }
 
-# Запуск helm чарта
-helm_run() {
-  local STANDID=$1
-  local HELM_EXISTS
-
-  echo "### HELM: update dependency  ============================================"
-  #  TODO Нужно раскоментировать
-  #    helm dependency update $STANDID
-
-  HELM_EXISTS=$(helm ls | grep -c ${HELM_NAME})
-  if [[ "${HELM_EXISTS}" == 0 ]]; then
-    echo "### HELM: install  ====================================================="
-    helm install "${HELM_NAME}" "${STANDID}" -f "${MY_VALUES}"
-  else
-    echo "### HELM: upgrade  ====================================================="
-    helm upgrade "${HELM_NAME}" "${STANDID}" -f "${MY_VALUES}"
-  fi
-}
-
 # Финальная функция, запускает сборку
 build_all() {
   local hash
-  is_master && is_committed
+    is_master && is_committed
 
-  hash=$(get_hash "${CDIR}")
+  hash=$(get_hash "${CDIR}/${projectFolder}")
   check_tag "${repoName}/${imageName}" "${hash}"
 
-  mvn docker:build -Dproject.image.name="${repoName}/${imageName}" -Dtag.version="${hash}"
+  cd "./${projectFolder}" || exit
+
+  mvn docker:build docker:push -Dproject.image.name="${repoName}/${imageName}" -Dtag.version="${hash}"
   status=$?
 
   if [[ "${status}" -eq 1 ]]; then
     hash="Error_${hash}"
     echo "Произошла ошибка во время сборки образа"
   fi
-
   add_tag "${hash}"
 
+  cd ../
   if [[ ! -f "${MY_VALUES}" ]]; then
     touch "${MY_VALUES}"
   fi
   IMAGE_VERSION="${repoName}/${imageName}:${hash}" yq e -i ".${chartName}.image = strenv(IMAGE_VERSION)" "${MY_VALUES}"
-  helm_run "${CHART_FOLDER}"
+
+  docker build -t helm .
 }
 
 build_all

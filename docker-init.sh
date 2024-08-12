@@ -1,12 +1,29 @@
 #!/bin/bash
 
+HELM_NAME=app
+CHART_FOLDER="/opt/my-chart/chart"
+MY_VALUES="/opt/my-chart/my.yaml"
+
+cd /opt/my-chart || exit
+
 #Задаем конфигурационный файл для kubectl
-export KUBECONFIG=/opt/config/config
+kubectl config set-cluster minikube --server=https://minikube:8443 --certificate-authority=/opt/config/ca.crt
+kubectl config set-credentials minikube --client-key=/opt/config/client.key --client-certificate=/opt/config/client.crt
+kubectl config set-context minikube --cluster=minikube --user=minikube
+kubectl config use-context minikube
 
-cd /opt/my-chart
+helm_run() {
+  local STANDID=$1
+  local HELM_EXISTS
 
-echo "helm dependency============================================="
-helm dependency update chart
-echo "helm upgrade================================================"
-helm upgrade app chart
+  HELM_EXISTS=$(helm ls | grep -c ${HELM_NAME})
+  if [[ "${HELM_EXISTS}" == 0 ]]; then
+    echo "### HELM: install  ====================================================="
+    helm install "${HELM_NAME}" "${STANDID}" -f "${MY_VALUES}"
+  else
+    echo "### HELM: upgrade  ====================================================="
+    helm upgrade "${HELM_NAME}" "${STANDID}" -f "${MY_VALUES}"
+  fi
+}
 
+helm_run "${CHART_FOLDER}"

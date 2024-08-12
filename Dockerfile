@@ -27,5 +27,8 @@ COPY ./chart-consumer /opt/my-chart/chart-consumer
 COPY ./chart-producer /opt/my-chart/chart-producer
 COPY ./minikube.config/ /opt/config/
 COPY ./docker-init.sh /opt/docker-init.sh
+COPY ./my.yaml /opt/my-chart/my.yaml
+
+RUN helm dependency update chart
 
 CMD ["/opt/docker-init.sh"]
