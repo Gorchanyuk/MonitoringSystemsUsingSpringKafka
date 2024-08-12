@@ -1,37 +1,37 @@
 #!/bin/bash
 
 CDIR=$(pwd)
-chartName=producer
-imageName=producer
-repoName=bezbasheniy
-projectFolder=metricsProducer
+CHART_NAME=producer
+IMAGE_NAME=producer
+PROJECT_FOLDER=metricsProducer
+REPO_NAME=bezbasheniy
 MY_VALUES="./my.yaml"
 
 #Проверка, что находимся в мастере и что совпадаем с удаленным репо
 is_master() {
   # Получаем имя текущей ветки
-  local current_branch
-  local local_commit
-  local remote_commit
-  current_branch=$(git rev-parse --abbrev-ref HEAD)
+  local CURRENT_BRANCH
+  local LOCAL_COMMIT
+  local REMOTE_COMMIT
+  CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
   # Проверяем, является ли текущая ветка мастер-веткой или основной веткой
-  if [[ "${current_branch}" != "master" ]] && [[ "${current_branch}" != "main" ]]; then
+  if [[ "${CURRENT_BRANCH}" != "master" ]] && [[ "${CURRENT_BRANCH}" != "main" ]]; then
     echo "Для сборки образа нужно находиться в ветке master или main"
     exit 1
   fi
 
   # Проверяем, что текущий коммит совпадает с удаленным
-  git fetch origin "${current_branch}"
-  local_commit=$(git rev-parse HEAD)
-  remote_commit=$(git rev-parse origin/"${current_branch}")
+  git fetch origin "${CURRENT_BRANCH}"
+  LOCAL_COMMIT=$(git rev-parse HEAD)
+  REMOTE_COMMIT=$(git rev-parse origin/"${CURRENT_BRANCH}")
 
-  if [[ "${local_commit}" != "${remote_commit}" ]]; then
+  if [[ "${LOCAL_COMMIT}" != "${REMOTE_COMMIT}" ]]; then
     echo "Локальная ветка не на последнем коммите"
     exit 1
   fi
 
-  echo "Находимся в ветке ${current_branch} и на последнем коммите"
+  echo "Находимся в ветке ${CURRENT_BRANCH} и на последнем коммите"
 }
 
 #Проверка, что отсутствуют незафиксированные изменения
@@ -45,60 +45,60 @@ is_committed() {
 
 #Вычисляем хеш по файлам и пакетам
 get_hash() {
-  local my_array=("src" "pom.xml" "Dockerfile")
-  local total_hash=""
+  local MY_ARRAY=("src" "pom.xml" "Dockerfile")
+  local TOTAL_HASH=""
 
-  for element in "${my_array[@]}"; do
+  for element in "${MY_ARRAY[@]}"; do
     local item="$1/${element}"
     if [[ ! -e "${item}" ]]; then
       continue
     fi
-    local hash=""
+    local HASH=""
     if [[ -d "${item}" ]]; then
-      hash="$(find "${item}" -type f -exec sha256sum {} + | awk '{ print $1 }')"
+      HASH="$(find "${item}" -type f -exec sha256sum {} + | awk '{ print $1 }')"
     else
-      hash="$(sha256sum "${item}" | awk '{ print $1 }')"
+      HASH="$(sha256sum "${item}" | awk '{ print $1 }')"
     fi
-    total_hash+="${hash}"
+    TOTAL_HASH+="${HASH}"
   done
 
-  echo -n "${total_hash}" | sha256sum | head -c 8
+  echo -n "${TOTAL_HASH}" | sha256sum | head -c 8
 }
 
 # Проверяем наличие сборки в локальном репо
 is_exist_local() {
-  local image_name=$1
-  local tag_name=$2
-  local result
+  local IMAGE_NAME=$1
+  local TAG_NAME=$2
+  local RESULT
 
-  result=$(docker images -q "${image_name}":"${tag_name}")
-  if [[ -z "${result}" ]]; then
+  RESULT=$(docker images -q "${IMAGE_NAME}":"${TAG_NAME}")
+  if [[ -z "${RESULT}" ]]; then
     return 1
   fi
 }
 
 # Проверяем наличие сборки в удаленном репо
 is_exist_remote() {
-  local repository=$1
-  local tag=$2
-  local url="https://hub.docker.com/v2/repositories/${repository}/tags/${tag}"
-  local http_code
+  local REPOSITORY=$1
+  local TAG=$2
+  local URL="https://hub.docker.com/v2/repositories/${REPOSITORY}/tags/${TAG}"
+  local HTTP_CODE
 
-  http_code=$(curl -s -o /dev/null -w "%{http_code}" "${url}")
-  if [[ "${http_code}" != 200 ]]; then
+  HTTP_CODE=$(curl -s -o /dev/null -w "%{HTTP_CODE}" "${URL}")
+  if [[ "${HTTP_CODE}" != 200 ]]; then
     return 1
   fi
 }
 
 # Проверяем наличие такой сборки
 check_tag() {
-  local repo=$1
-  local tag=$2
-  if is_exist_local "$repo" "$tag"; then
+  local REPO=$1
+  local TAG=$2
+  if is_exist_local "$REPO" "$TAG"; then
     echo "Сборка найдена в локальном репо"
     exit 1
   fi
-  if is_exist_remote "$repo" "$tag"; then
+  if is_exist_remote "${REPO}" "${TAG}"; then
     echo "Сборка найдена в удаленном репо"
     exit 1
   fi
@@ -107,37 +107,37 @@ check_tag() {
 
 # Добавляет тег к комиту
 add_tag() {
-  local tag_name=$1
-  git tag -a "${tag_name}" -m "Соответствует образу сборки с тегом - ${tag_name}"
+  local TAG_NAME=$1
+  git tag -a "${TAG_NAME}" -m "Соответствует образу сборки с тегом - ${TAG_NAME}"
   if [[ $? -eq 1 ]]; then
-    echo "Тег ${tag_name} уже существует"
+    echo "Тег ${TAG_NAME} уже существует"
   fi
 }
 
 # Финальная функция, запускает сборку
 build_all() {
-  local hash
+  local HASH
     is_master && is_committed
 
-  hash=$(get_hash "${CDIR}/${projectFolder}")
-  check_tag "${repoName}/${imageName}" "${hash}"
+  HASH=$(get_hash "${CDIR}/${PROJECT_FOLDER}")
+  check_tag "${REPO_NAME}/${IMAGE_NAME}" "${HASH}"
 
-  cd "./${projectFolder}" || exit
+  cd "./${PROJECT_FOLDER}" || exit
 
-  mvn docker:build docker:push -Dproject.image.name="${repoName}/${imageName}" -Dtag.version="${hash}"
+  mvn docker:build docker:push -Dproject.image.name="${REPO_NAME}/${IMAGE_NAME}" -Dtag.version="${HASH}"
   status=$?
 
   if [[ "${status}" -eq 1 ]]; then
-    hash="Error_${hash}"
+    HASH="Error_${HASH}"
     echo "Произошла ошибка во время сборки образа"
   fi
-  add_tag "${hash}"
+  add_tag "${HASH}"
 
   cd ../
   if [[ ! -f "${MY_VALUES}" ]]; then
     touch "${MY_VALUES}"
   fi
-  IMAGE_VERSION="${repoName}/${imageName}:${hash}" yq e -i ".${chartName}.image = strenv(IMAGE_VERSION)" "${MY_VALUES}"
+  IMAGE_VERSION="${REPO_NAME}/${IMAGE_NAME}:${HASH}" yq e -i ".${CHART_NAME}.image = strenv(IMAGE_VERSION)" "${MY_VALUES}"
 
   docker build -t helm .
 }

@@ -12,18 +12,12 @@ kubectl config set-credentials minikube --client-key=/opt/config/client.key --cl
 kubectl config set-context minikube --cluster=minikube --user=minikube
 kubectl config use-context minikube
 
-helm_run() {
-  local STANDID=$1
-  local HELM_EXISTS
 
-  HELM_EXISTS=$(helm ls | grep -c ${HELM_NAME})
-  if [[ "${HELM_EXISTS}" == 0 ]]; then
-    echo "### HELM: install  ====================================================="
-    helm install "${HELM_NAME}" "${STANDID}" -f "${MY_VALUES}"
-  else
-    echo "### HELM: upgrade  ====================================================="
-    helm upgrade "${HELM_NAME}" "${STANDID}" -f "${MY_VALUES}"
-  fi
-}
-
-helm_run "${CHART_FOLDER}"
+HELM_EXISTS=$(helm ls | grep -c ${HELM_NAME})
+if (( "${HELM_EXISTS}" == 0 )); then
+  echo "### HELM: install  ====================================================="
+  helm install "${HELM_NAME}" "${CHART_FOLDER}" -f "${MY_VALUES}"
+else
+  echo "### HELM: upgrade  ====================================================="
+  helm upgrade "${HELM_NAME}" "${CHART_FOLDER}" -f "${MY_VALUES}"
+fi
