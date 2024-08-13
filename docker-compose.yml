@@ -8,6 +8,8 @@ services:
     image: 'bezbasheniy/gorchanyuk.producer:0.1.0'
     build:
       context: ./metricsProducer
+      args:
+        JAR_FILE: ${project.build.finalName}.jar
     container_name: gorchanyuk_producer
     ports:
       - "8090:8090"
