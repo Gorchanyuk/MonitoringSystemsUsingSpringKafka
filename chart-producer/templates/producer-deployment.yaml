@@ -46,3 +46,10 @@ spec:
             successThreshold: 1
             failureThreshold: 2
             timeoutSeconds: 5
+          resources:
+            limits:
+              cpu: {{ .Values.limits.cpu}}
+              memory: {{ .Values.limits.memory}}
+            requests:
+              cpu: {{ .Values.requests.cpu}}
+              memory: {{ .Values.requests.memory}}

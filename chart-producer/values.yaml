@@ -1,6 +1,12 @@
 # Default Values for my Helm Chart
 
 replicaCount: 1
+requests:
+  cpu: 500m
+  memory: 256Mi
+limits:
+  cpu: 1
+  memory: 1Gi
 name: producer
 image: bezbasheniy/gorchanyuk.producer:0.1.0
 port: 8090
