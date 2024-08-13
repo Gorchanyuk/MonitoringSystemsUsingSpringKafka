@@ -1,0 +1,8 @@
+producer:
+  replicaCount: 3
+  requests:
+    cpu: 1m
+    memory: 1Mi
+  limits:
+    cpu: 900m
+    memory: 500Mi
